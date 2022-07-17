@@ -1,0 +1,1 @@
+alias mysite='cd /Users/ryukyunghye/Documents/GitHub/Django/projects/mysite; source /Users/ryukyunghye/Documents/GitHub/Django/venv/bin/activate'
