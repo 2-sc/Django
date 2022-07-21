@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from user.views import home
 
 urlpatterns = [
     # 프로젝트의 url 세팅
     path('admin/', admin.site.urls),
     # 앱의 url 연동 -> user/ 를 작성하면 user 앱에 세팅된 url들을 사용할 수 있다.
-    path('user/', include('user.urls'))
+    path('user/', include('user.urls')),
+    path('', home),
 ]
