@@ -18,13 +18,14 @@ class Loginform(forms.Form):
         widget=forms.PasswordInput, label='비밀번호')
 
     def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get('username') # username 필드에 있는 값 가져오기
-        password = cleaned_data.get('password') # password 필드에 있는 값 가져오기
+        # 값이 비어있는지 검사하는 메소드. 값이 있으면 필드 이름을 키로 하는 cleaned_data 딕셔너리에 추가
+        cleaned_data = super().clean() 
+        username = cleaned_data.get('username') # 딕셔너리에서 username 키 값 가져오기
+        password = cleaned_data.get('password') # cleaned_data에서 password 키 값 가져오기
 
         if username and password: # 값이 둘다 존재한다면
             user = User.objects.get(username=username) # username 과 일치하는 유저 객체 불러오기
             if not check_password(password, user.password): # 입력한 password 와 유저 password 가 다르면
-                self.add_error('password', '비밀번호를 틀렸습니다') # 에러 메세지 출력
-            else: # 아니라면
+                self.add_error('password', '비밀번호를 틀렸습니다') # password 필드에 에러 메세지 추가
+            else: # 에러가 없으면
                 self.user_id = user.id # 해당 유저 아이디 값을 폼을 호출한 유저의 아이디에 저장
