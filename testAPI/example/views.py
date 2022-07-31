@@ -18,6 +18,10 @@ from .serializers import BookSerializer
 def helloAPI(request):
     return Response("hello world")
 
+class HelloAPI(APIView):
+    def get(self, request, format=None):
+        return Response("hello world")
+        
 @api_view(['GET','POST'])                                           # GET/POST 요청을 처리하게 만들어주는 데코레이터
 def booksAPI(request):                                              # /book/
     if request.method =='GET':                                      # GET 요청(도서 전체 정보)
@@ -36,3 +40,20 @@ def bookAPI(request, bid):
     book = get_object_or_404(Book, bid=bid) # bid = id인 데이터를 Book에서 가져오고 없다면 404 에러
     serializer = BookSerializer(book)       # 시리얼라이저에 데이터 집어넣기, 직렬화
     return Response(serializer.data, status = status.HTTP_200_OK)
+
+class BooksAPI(APIView):
+    def get(self, request):
+        books = Book.objects.all()
+        serializer = BookSerializer(books, many =True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    def post(self,request):
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save() 
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class BookAPI(APIView):
+    def get(self, request, bid):
+        book = get_object_or_404(Book, bid=bid)
+        serializer=BookSerializer(book)
+        return Response(serializer.data, status =status.HTTP_200_OK)
