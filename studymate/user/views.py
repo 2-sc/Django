@@ -19,25 +19,27 @@ def register(request): # 회원가입 시 문제 없으면 로그인페이지 �
         return render(request, 'register.html')
     elif(request.method == 'POST'):
         userid = request.POST.get('userid', None)
+        username = request.POST.get('username', None)
         password = request.POST.get('password', None)
         re_password = request.POST.get('re_password', None)
     
     res_data = {}
 
-    if not(userid and password and re_password):
+    if not(userid and username and password and re_password):
         res_data['error'] = '아이디 또는 비밀번호를 입력해주세요'
     elif (password != re_password):
         res_data['error'] = '비밀번호가 다릅니다'
     else:
         user = User(
             userid = userid,
+            username = username,
             password = password
         )
         user.save()
         return redirect('/user/login')
     return render(request, 'register.html', res_data)
 
-def login(request): # 로그인 성공시 프로필 설정 페이지로, 실패시 에러메세지 남기고 로그인 페이지 머물기
+def login(request): # 로그인 성공시 홈페이지로, 실패시 에러메세지 남기고 로그인 페이지 머물기
     if(request.method == 'GET'):
         return render(request, 'login.html')
     elif(request.method == 'POST'):
@@ -56,30 +58,25 @@ def login(request): # 로그인 성공시 프로필 설정 페이지로, 실패�
                 res_data['error'] = '비밀번호가 일치하지 않습니다'
             else:
                 request.session['user'] = user.id
-                if(UserProfile.objects.get(user_id=user.id)): # 이미 프로필 설정을 했으면 바로 홈페이지로
-                    return redirect('/')
-                else:
-                    return redirect('/user/profile')
+                return redirect('/user/profile')
         return render(request, 'login.html', res_data)
 
 
-def profile(request): # 프로필 설정 후 홈페이지로
+def profile(request): # 홈페이지 로그창에서 프로필 수정..(예정)
     if(request.method == 'GET'):
         return render(request, 'profile.html')
     elif(request.method == 'POST'):
         userid = request.session.get('user')
         user_id = User.objects.get(pk=userid)
-        username = request.POST.get('username', None)
         profile_contents = request.POST.get('profile_contents', None)
 
         res_data = {}
 
-        if not(username and profile_contents):
+        if not profile_contents:
             res_data['error'] = '프로필을 설정해주세요'
         else:
             user_profile = UserProfile(
                 user_id = user_id,
-                username = username,
                 profile_contents = profile_contents
             )
             user_profile.save()

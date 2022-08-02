@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block contents %}
+    <div
+      class="container"
+      style="
+        width: 600px;
+        height: 700px;
+        padding: 20px;
+        display: flex;
+        border: 1px solid saddlebrown;
+      "
+    >
+      <section style="flex: 1 1 auto; padding: 20px; height: 100%">
+        <div
+          class="profile"
+          style="height: 45%; border: 1px solid black; margin-bottom: 22%"
+        >
+          프로필
+        </div>
+        <div class="calendar" style="height: 45%; border: 1px solid black">
+          달력
+        </div>
+      </section>
+      <div
+        class="result"
+        style="
+          flex: 1 1 auto;
+          margin: 20px;
+          height: 95%;
+          border: 1px solid black;
+        "
+      >
+        공부결과
+      </div>
+      <section style="flex: 1 1 auto; padding: 20px; height: 100%">
+        <div
+          class="todolist"
+          style="height: 45%; border: 1px solid black; margin-bottom: 22%"
+        >
+          투두리스트
+        </div>
+
+        <!-- 담벼락 -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <table>
+                    <tbody>
+                        {% for board in boards %}
+                        <tr>
+                            <th>{{ board.writer }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ board.contents }}</th>
+                            <th>{{ board.dttm }}</th>
+                        </tr>
+                        {% endfor %}
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>              
+        <form method="POST" action=".">
+                <!-- 크로스 도메인(외부에서 데이터를 전달)을 막기 위함-->
+                {% csrf_token %}
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    id="contents"
+                    placeholder="댓글을 입력하세요"
+                    name="contents"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">등록</button>
+              </form>
+            </div>
+          </div>
+    </div>
+      </section>
+{% endblock %}

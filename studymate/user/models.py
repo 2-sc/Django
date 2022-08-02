@@ -4,6 +4,7 @@ from django.db import models
 
 class User(models.Model):
     userid = models.CharField(max_length=32, verbose_name='아이디')
+    username = models.CharField(max_length=32, verbose_name='이름')
     password = models.CharField(max_length=64, verbose_name='비밀번호')
 
     def __str__(self):
@@ -17,12 +18,8 @@ class User(models.Model):
 
 class UserProfile(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, db_column='user_id')
-    username = models.CharField(max_length=32, verbose_name='이름')
     profile_contents = models.TextField(verbose_name='간단한 소개')
 
-    def __str__(self):
-        return self.username
-    
     class Meta:
         db_table = 'user_profile'
         verbose_name = '유저프로필'
