@@ -1,8 +1,9 @@
 from django.urls import path
-import views
+from . import views
 
 urlpatterns = [
-    path('account/login/kakao/', kakao_login, name='kakao_login'),
-    path('account/login/kakao/callback/', kakao_callback, name='kakao_callback'),
-
+    path('account/kakao/login/', views.kakao_login, name='kakao_login'),
+    path('account/kakao/callback/', views.kakao_callback, name='kakao_callback'),
+    #path('accounts/kakao/login/finish/', views.KakaoLogin.as_view(), name='kakao_login_todjango'),
+    
 ]
