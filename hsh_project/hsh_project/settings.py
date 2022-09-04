@@ -62,6 +62,7 @@ INSTALLED_APPS = [
 
     # app
     'hsh_app_1',
+    'kakao_1'
 ]
 
 SITE_ID = 1
@@ -76,6 +77,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -86,6 +88,10 @@ REST_FRAMEWORK = {
     )
 }
 
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_AUTHENTICATED_LOGOUT_REDIRECTS = True
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
