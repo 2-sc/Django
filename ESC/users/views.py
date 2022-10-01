@@ -24,7 +24,7 @@ class LoginView(generics.GenericAPIView):
 
 
 class UserProfileView(APIView):
-    def get(self, request):
+    def get(self, request, pk):
         user_profile = User.objects.get(email=self.request.user)
         serializer = ProfileSerializer(user_profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
